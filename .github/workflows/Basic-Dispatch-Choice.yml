@@ -16,7 +16,11 @@ on:
           - ALLE2E
 
 jobs:
-  gwson:
+  mcgws:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Running gwson using input ${{ github.event.inputs.TEST_PROFILE }}"
+      - run: echo "Running input ${{ github.event.inputs.TEST_PROFILE }}"
+  mcsos:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running input ${{ github.event.inputs.TEST_PROFILE }}"
