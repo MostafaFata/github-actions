@@ -21,7 +21,7 @@ on:
     - cron: '*/10 * * * *'
 
 jobs:
-  mcgws:
+  mcgwsi:
     runs-on: ubuntu-latest
     # If triggered by schedule, default to 'ALL'. Otherwise, use the manual input choice.
     if: |
@@ -40,9 +40,46 @@ jobs:
           PROFILE="${{ github.event.inputs.TEST_PROFILE || 'ALL' }}"
           echo "Running profile: $PROFILE"
 
-  mcsos:
+  mcgwse:
     runs-on: ubuntu-latest
-    needs: mcgws
+    # If triggered by schedule, default to 'ALL'. Otherwise, use the manual input choice.
+    if: |
+      !cancelled() && 
+      (
+        (github.event_name == 'schedule' && 'ALL' == 'ALL') ||
+        (github.event_name == 'workflow_dispatch' && 
+          (github.event.inputs.TEST_PROFILE == 'MCGWS' || 
+           github.event.inputs.TEST_PROFILE == 'ALL')
+        )
+      )
+    steps:
+      # We use an expression to safely echo the correct profile name
+      - name: Run Profile
+        run: |
+          PROFILE="${{ github.event.inputs.TEST_PROFILE || 'ALL' }}"
+          echo "Running profile: $PROFILE"
+
+  mcsosi:
+    runs-on: ubuntu-latest
+    needs: [mcgwsi, mcgwse]
+    if: |
+      !cancelled() && 
+      (
+        (github.event_name == 'schedule' && 'ALL' == 'ALL') ||
+        (github.event_name == 'workflow_dispatch' && 
+          (github.event.inputs.TEST_PROFILE == 'MCSOS' || 
+           github.event.inputs.TEST_PROFILE == 'ALL')
+        )
+      )
+    steps:
+      - name: Run Profile
+        run: |
+          PROFILE="${{ github.event.inputs.TEST_PROFILE || 'ALL' }}"
+          echo "Running profile: $PROFILE"
+
+  mcsose:
+    runs-on: ubuntu-latest
+    needs: [mcgwsi, mcgwse]
     if: |
       !cancelled() && 
       (
