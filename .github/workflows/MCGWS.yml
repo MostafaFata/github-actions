@@ -13,6 +13,12 @@ on:
           - MCGWSI
           - MCGWSE
           - MCGWSL
+          
+   workflow_call:
+        inputs:
+          some_input:
+            required: false
+            type: string
 
 jobs:
   build:
