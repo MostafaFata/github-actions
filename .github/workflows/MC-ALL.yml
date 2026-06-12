@@ -17,5 +17,6 @@ jobs:
 
   sos-all:
     needs: gws-all
+    if: always()
     uses: ./.github/workflows/MCSOS.yml
 
