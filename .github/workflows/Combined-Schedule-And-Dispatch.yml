@@ -16,8 +16,8 @@ on:
 
   # Trigger 2: Automated schedule (e.g., Every day at midnight UTC)
   schedule:
-    - # 6:00 AM UTC = 11:00 PM Seattle Time in Summer
-    - # (Note: This will become 10:00 PM Seattle Time in Winter)
+    # 6:00 AM UTC = 11:00 PM Seattle Time in Summer
+    # (Note: This will become 10:00 PM Seattle Time in Winter)
     - cron: '* 6 * * *'
 
 jobs:
