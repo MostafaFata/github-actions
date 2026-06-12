@@ -13,7 +13,6 @@ on:
           - MCGWS
           - MCSOS
           - ALL
-
   # Trigger 2: Automated schedule (e.g., Every day at midnight UTC)
   schedule:
     # 6:00 AM UTC = 11:00 PM Seattle Time in Summer
