@@ -35,10 +35,9 @@ jobs:
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: |
       (
-        inputs.TEST_PROFILE == 'MCGWS' ||
-        inputs.TEST_PROFILE == 'MCGWSI' ||
-        inputs.TEST_PROFILE == 'ALL' ||
-        inputs.TEST_PROFILE == null
+        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
+        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWSE' ||
+        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL'
       )
 
        
