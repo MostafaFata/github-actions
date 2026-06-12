@@ -17,9 +17,13 @@ on:
     - cron: '0 19 * * *'
 
 jobs:
+  build:
+    uses: ./.github/workflows/ci-compile.yml
+
   # ================= PHASE 1 (PARALLEL) =================
   mcgwsi:
     runs-on: ubuntu-latest
+    needs: build
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: |
       !cancelled() && 
@@ -31,6 +35,7 @@ jobs:
 
   mcgwse:
     runs-on: ubuntu-latest
+    needs: build
     if: |
       !cancelled() && 
       ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
@@ -42,7 +47,7 @@ jobs:
   # ================= PHASE 2 (PARALLEL) =================
   mcsosi:
     runs-on: ubuntu-latest
-    needs: [mcgwsi, mcgwse]
+    needs: [build, mcgwsi, mcgwse]
     # always() ensures this block evaluates even if Phase 1 was skipped (e.g. when choosing MCSOS)
     if: |
       always() && !cancelled() && 
@@ -54,7 +59,7 @@ jobs:
 
   mcsose:
     runs-on: ubuntu-latest
-    needs: [mcgwsi, mcgwse]
+    needs: [build, mcgwsi, mcgwse]
     if: |
       always() && !cancelled() && 
       ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOS' || 
