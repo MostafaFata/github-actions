@@ -5,16 +5,16 @@ on:
     inputs:
       TEST_PROFILE:
         description: 'Profile to run'
-        required: true
+        required: false
         default: 'ALL'
         type: choice
         options:
-          - MCGWS
-          - MCGWSI
-          - MCGWSE
-          - MCGWSL
+          - ALL
 
 jobs:
   gws-all:
     uses: ./.github/workflows/MCGWS.yml
+
+  sos-all:
+    uses: ./.github/workflows/MCSOS.yml
 
