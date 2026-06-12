@@ -20,9 +20,9 @@ jobs:
 
   gwson:
     runs-on: ubuntu-latest
+    needs: build
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: |
-      !cancelled() && 
       ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
     steps:
@@ -31,7 +31,7 @@ jobs:
   # ================= PHASE 1 (PARALLEL) =================
   mcgwse:
     runs-on: ubuntu-latest
-    needs: gwson
+    needs: [build, gwson]
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: |
        ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
@@ -42,7 +42,7 @@ jobs:
 
   mcgwsi:
     runs-on: ubuntu-latest
-    needs: gwson
+    needs: [build, gwson]
     if: |
        ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
@@ -52,7 +52,7 @@ jobs:
 
   mcgwsl:
     runs-on: ubuntu-latest
-    needs: gwson
+    needs: [build, gwson]
     if: |
        ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
