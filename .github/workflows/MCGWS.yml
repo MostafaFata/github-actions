@@ -1,0 +1,58 @@
+name: MCGWS
+
+on:
+  workflow_dispatch:
+    inputs:
+      TEST_PROFILE:
+        description: 'Profile to run'
+        required: true
+        default: 'ALL'
+        type: choice
+        options:
+          - MCGWS
+          - MCGWSI
+          - MCGWSE
+          - MCGWSL
+
+jobs:
+  gwson:
+    runs-on: ubuntu-latest
+    # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
+    if: |
+      !cancelled() && 
+      ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
+       (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Turning GWS ON"
+  # ================= PHASE 1 (PARALLEL) =================
+  mcgwse:
+    runs-on: ubuntu-latest
+    needs: gwson
+    # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
+    if: |
+       ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
+       (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Running MCGWSE"
+
+  mcgwsi:
+    runs-on: ubuntu-latest
+    needs: gwson
+    if: |
+       ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
+       (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Running MCGWSE"
+
+  mcgwsl:
+    runs-on: ubuntu-latest
+    needs: gwson
+    if: |
+       ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
+       (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Running MCGWSE"
