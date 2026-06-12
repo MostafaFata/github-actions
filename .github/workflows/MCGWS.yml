@@ -23,8 +23,11 @@ jobs:
     needs: build
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: |
-      ((github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
-       (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL')
+      (
+        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWS' || 
+        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCGWSE' ||
+        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL'
+      )
     steps:
       - name: Run Profile
         run: echo "Turning GWS ON"
