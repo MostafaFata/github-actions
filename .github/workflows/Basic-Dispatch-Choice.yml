@@ -22,5 +22,6 @@ jobs:
       - run: echo "Running input ${{ github.event.inputs.TEST_PROFILE }}"
   mcsos:
     runs-on: ubuntu-latest
+    needs: mcgws
     steps:
       - run: echo "Running input ${{ github.event.inputs.TEST_PROFILE }}"
