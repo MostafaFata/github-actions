@@ -1,0 +1,60 @@
+name: Workflow-Level Env Schedule and Dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      TEST_PROFILE:
+        description: 'Profile to run'
+        required: false
+        default: 'ALL'
+        type: choice
+        options:
+          - MCGWS
+          - MCSOS
+          - ALL
+
+  schedule:
+    - cron: '*/10 * * * *'
+
+# 1. Simplify logic by tracking the targeted profile globally
+env:
+  CHOSEN_PROFILE: "${{ github.event.inputs.TEST_PROFILE || 'ALL' }}"
+
+jobs:
+  # ================= PHASE 1 (PARALLEL) =================
+  mcgwsi:
+    runs-on: ubuntu-latest
+    if: !cancelled() && (env.CHOSEN_PROFILE == 'MCGWS' || env.CHOSEN_PROFILE == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Running profile ${{ env.CHOSEN_PROFILE }}"
+
+  mcgwse:
+    runs-on: ubuntu-latest
+    if: !cancelled() && (env.CHOSEN_PROFILE == 'MCGWS' || env.CHOSEN_PROFILE == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Running profile ${{ env.CHOSEN_PROFILE }}"
+
+  # ================= PHASE 2 (PARALLEL) =================
+  mcsosi:
+    runs-on: ubuntu-latest
+    needs: [mcgwsi, mcgwse]
+    # 2. CRITICAL: always() forces GitHub to evaluate this job even if Phase 1 was skipped
+    if: |
+      always() && !cancelled() && 
+      (env.CHOSEN_PROFILE == 'MCSOS' || env.CHOSEN_PROFILE == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Running profile ${{ env.CHOSEN_PROFILE }}"
+
+  mcsose:
+    runs-on: ubuntu-latest
+    needs: [mcgwsi, mcgwse]
+    # 2. CRITICAL: always() forces GitHub to evaluate this job even if Phase 1 was skipped
+    if: |
+      always() && !cancelled() && 
+      (env.CHOSEN_PROFILE == 'MCSOS' || env.CHOSEN_PROFILE == 'ALL')
+    steps:
+      - name: Run Profile
+        run: echo "Running profile ${{ env.CHOSEN_PROFILE }}"
