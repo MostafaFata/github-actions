@@ -13,8 +13,7 @@ jobs:
   compile:
     name: compile
     runs-on:
-      - self-hosted
-      - master-consol-rh7
+      - ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
