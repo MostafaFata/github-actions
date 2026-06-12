@@ -12,16 +12,20 @@ on:
           - MCGWS
           - MCSOS
           - ALL
-          - ALLINV
-          - ALLE2E
 
 jobs:
   mcgws:
     runs-on: ubuntu-latest
+    if: |
+      github.event.inputs.TEST_PROFILE == 'MCGWS' || 
+      github.event.inputs.TEST_PROFILE == 'ALL'
     steps:
       - run: echo "Running input ${{ github.event.inputs.TEST_PROFILE }}"
   mcsos:
     runs-on: ubuntu-latest
     needs: mcgws
+    if: |
+      github.event.inputs.TEST_PROFILE == 'MCSOS' || 
+      github.event.inputs.TEST_PROFILE == 'ALL'
     steps:
       - run: echo "Running input ${{ github.event.inputs.TEST_PROFILE }}"
