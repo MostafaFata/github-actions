@@ -15,17 +15,9 @@ on:
           - MCGWSL
 
 jobs:
-  build:
-    uses: ./.github/workflows/ci-compile.yml
-
-  gwson:
+  gws-all:
     uses: ./.github/workflows/MCGWS.yml
     
-  mcgwse:
-    uses: ./.github/workflows/MCGWS.yml
+  sos-all:
+    uses: ./.github/workflows/MCSOS.yml
 
-  mcgwsi:
-    uses: ./.github/workflows/MCGWS.yml
-
-  mcgwsl:
-   uses: ./.github/workflows/MCGWS.yml
