@@ -50,8 +50,7 @@ jobs:
     # Rule check: pipeline source (workflow_run/dispatch) or PROFILE matches MCLITE
     if: |
       github.event_name == 'workflow_dispatch' || 
-      github.event_name == 'workflow_run' || 
-      regex-match(github.env.TEST_PROFILE, '^MCLITE$')
+      github.event_name == 'workflow_run'
     steps:
       - name: Run MCLite Test
         run: echo "MCLite Test"
