@@ -17,7 +17,4 @@ on:
 jobs:
   gws-all:
     uses: ./.github/workflows/MCGWS.yml
-    
-  sos-all:
-    uses: ./.github/workflows/MCSOS.yml
 
