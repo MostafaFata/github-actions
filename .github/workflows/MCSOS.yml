@@ -15,10 +15,10 @@ on:
           - MCSOSL
           
   workflow_call:
-    inputs:
-      some_input:
-       required: false
-       type: string
+        inputs:
+          some_input:
+            required: false
+            type: string
 
 jobs:
   build:
