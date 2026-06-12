@@ -14,7 +14,7 @@ on:
           - ALL
 
   schedule:
-    - cron: '0 10 * * *'
+    - cron: '0 19 * * *'
 
 jobs:
   # ================= PHASE 1 (PARALLEL) =================
