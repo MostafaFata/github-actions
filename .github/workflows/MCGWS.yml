@@ -15,6 +15,9 @@ on:
           - MCGWSL
 
 jobs:
+  build:
+    uses: ./.github/workflows/ci-compile.yml
+
   gwson:
     runs-on: ubuntu-latest
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
