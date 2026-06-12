@@ -16,12 +16,14 @@ on:
           
   workflow_call:
         inputs:
-          some_input:
+          skip_build:
             required: false
-            type: string
+            type: boolean
+            default: false
 
 jobs:
   build:
+    if: ${{ !inputs.skip_build }}
     uses: ./.github/workflows/ci-compile.yml
 
   soson:
