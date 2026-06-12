@@ -19,4 +19,7 @@ jobs:
     needs: gws-all
     if: always()
     uses: ./.github/workflows/MCSOS.yml
+    with:
+      skip_build: true
+
 
