@@ -1,0 +1,22 @@
+name: Basic-Dispatch-Choice
+
+on:
+  workflow_dispatch:
+    inputs:
+      TEST_PROFILE:
+        description: 'Profile to run'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - MCGWS
+          - MCSOS
+          - ALL
+          - ALLINV
+          - ALLE2E
+
+jobs:
+  gwson:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running gwson using input ${{ github.event.inputs.TEST_PROFILE }}"
