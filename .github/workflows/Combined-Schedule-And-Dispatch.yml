@@ -17,7 +17,7 @@ on:
   schedule:
     # 6:00 AM UTC = 11:00 PM Seattle Time in Summer
     # (Note: This will become 10:00 PM Seattle Time in Winter)
-    - cron: '10 10 * * *'
+    - cron: '10 19 * * *'
 
 jobs:
   mcgwsi:
