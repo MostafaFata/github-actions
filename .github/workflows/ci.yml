@@ -69,7 +69,6 @@ jobs:
         run: |
           if [[ "$TEST_PROFILE" =~ ^MCGWS([LIE])?$|^GWSON$|^ALL(INV|E2E)?$ ]]; then
             echo "Turn GWS flag on"
-            exit 1
           else
             echo "Skipped due to rule matching"
           fi
