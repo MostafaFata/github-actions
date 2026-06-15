@@ -5,11 +5,21 @@ on:
     inputs:
       TEST_PROFILE:
         description: 'Profile to run'
-        required: false
+        required: true
         default: 'ALL'
         type: choice
-        options:
-          - ALL
+        options: [ALL]
+      EXPORT_TEMPLATE:
+        description: 'Export Template'
+        required: false
+        default: 'TPV01'
+        type: string
+      CF_RUNMODE:
+        description: 'CFIT Runmode'
+        required: false
+        default: 'B'
+        type: choice
+        options: [A, B, N, P]
 
 jobs:
   gws-all:
