@@ -28,3 +28,6 @@ jobs:
         shell: bash
         run: |
           java -version
+      - name: Triggered by
+        run: |
+          echo "Triggered by ${{ github.actor }}"
