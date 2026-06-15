@@ -8,11 +8,7 @@ on:
         required: true
         default: 'ALL'
         type: choice
-        options:
-          - MCGWS
-          - MCGWSI
-          - MCGWSE
-          - MCGWSL
+        options: [MCGWS, MCGWSI, MCGWSE, MCGWSL]
       EXPORT_TEMPLATE:
         description: 'Export Template'
         required: false
@@ -23,11 +19,7 @@ on:
         required: false
         default: 'B'
         type: choice
-        options:
-          - A
-          - B
-          - N
-          - P
+        options: [A, B, N, P]
   workflow_call:
         inputs:
           skip_build:
