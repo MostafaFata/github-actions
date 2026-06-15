@@ -13,6 +13,21 @@ on:
           - MCGWSI
           - MCGWSE
           - MCGWSL
+      EXPORT_TEMPLATE:
+        description: 'Export Template'
+        required: false
+        default: 'TPV01'
+        type: string
+      CF_RUNMODE:
+        description: 'CFIT Runmode'
+        required: false
+        default: 'B'
+        type: choice
+        options:
+          - A
+          - B
+          - N
+          - P
 
   workflow_call:
         inputs:
