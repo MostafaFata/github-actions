@@ -1,4 +1,4 @@
-name: MCALL
+name: MCALL (${{ github.event_name }})
 
 on:
   schedule:
