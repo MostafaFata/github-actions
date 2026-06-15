@@ -8,12 +8,18 @@ on:
         required: true
         default: 'ALL'
         type: choice
-        options:
-          - MCSOS
-          - MCSOSI
-          - MCSOSE
-          - MCSOSL
-          
+        options: [MCSOS, MCSOSI, MCSOSE, MCSOSL]
+      EXPORT_TEMPLATE:
+        description: 'Export Template'
+        required: false
+        default: 'TPV01'
+        type: string
+      CF_RUNMODE:
+        description: 'CFIT Runmode'
+        required: false
+        default: 'B'
+        type: choice
+        options: [A, B, N, P]
   workflow_call:
         inputs:
           skip_build:
@@ -30,15 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
-    if: | 
-      always() &&
-      (
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOS' || 
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOSE' ||
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOSI' ||
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOSL' ||
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL'
-      )
+    if: always() && contains(fromJson('["MCSOS","MCSOSE","MCSOSI","MCSOSL","ALL"]'), inputs.TEST_PROFILE) 
     steps:
       - name: Run Profile
         run: echo "Turning SOS ON"
@@ -47,41 +45,32 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, soson]
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
-    if: |
-      always() &&
-      (
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOS' || 
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOSE' ||
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL'
-      )
+    if: always() && contains(fromJson('["MCSOS","MCSOSE","ALL"]'), inputs.TEST_PROFILE)
     steps:
       - name: Run Profile
-        run: echo "Running MCSOSE"
+        run: |
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
 
   mcsosi:
     runs-on: ubuntu-latest
     needs: [build, soson]
-    if: |
-      always() &&
-      (
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOS' || 
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOSI' ||
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL'
-      )
+    if: always() && contains(fromJson('["MCSOS","MCSOSI","ALL"]'), inputs.TEST_PROFILE)
     steps:
       - name: Run Profile
-        run: echo "Running MCSOSI"
+        run: |
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
 
   mcsosl:
     runs-on: ubuntu-latest
     needs: [build, soson]
-    if: |
-      always() &&
-      (
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOS' || 
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'MCSOSL' ||
-        (github.event.inputs.TEST_PROFILE || 'ALL') == 'ALL'
-      )
+    if: always() && contains(fromJson('["MCSOS","MCSOSL","ALL"]'), inputs.TEST_PROFILE)
     steps:
       - name: Run Profile
-        run: echo "Running MCSOSL"
+        run: |
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
