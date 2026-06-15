@@ -70,7 +70,10 @@ jobs:
       )
     steps:
       - name: Run Profile
-        run: echo "Running MCGWSE"
+        run: |
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
 
   mcgwsi:
     runs-on: ubuntu-latest
@@ -83,7 +86,10 @@ jobs:
       )
     steps:
       - name: Run Profile
-        run: echo "Running MCGWSI"
+        run: |
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
 
   mcgwsl:
     runs-on: ubuntu-latest
@@ -96,4 +102,7 @@ jobs:
       )
     steps:
       - name: Run Profile
-        run: echo "Running MCGWSL"
+        run: |
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
