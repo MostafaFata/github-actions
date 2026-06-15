@@ -1,0 +1,43 @@
+name: MCLITE Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      TEST_PROFILE:
+        description: 'Profile to run'
+        required: true
+        default: 'MCLITE'
+        type: choice
+        options: [MCLITE]
+      EXPORT_TEMPLATE:
+        description: 'Export Template'
+        required: false
+        default: 'TPV01'
+        type: string
+      CF_RUNMODE:
+        description: 'CFIT Runmode'
+        required: false
+        default: 'P'
+        type: choice
+        options: [A, B, N, P]
+    
+  workflow_run:
+    workflows: ["GWS Workflow"] 
+    types:
+      - completed
+
+jobs:
+  mcLite:
+    runs-on: ubuntu-latest
+    if: >
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        (github.event_name == 'workflow_run' &&
+         github.event.workflow_run.conclusion == 'success')
+      }}
+    steps:
+      - name: Run MCLITE job
+        run: |
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
