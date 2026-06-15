@@ -52,6 +52,7 @@ jobs:
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+          echo "Triggered by ${{ github.actor }}"
 
   mcgwsi:
     runs-on: ubuntu-latest
@@ -63,6 +64,7 @@ jobs:
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+          echo "Triggered by ${{ github.actor }}"
 
   mcgwsl:
     runs-on: ubuntu-latest
@@ -74,3 +76,4 @@ jobs:
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+          echo "Triggered by ${{ github.actor }}"
