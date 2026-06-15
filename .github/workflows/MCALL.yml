@@ -1,6 +1,10 @@
-name: MC-ALL
+name: MCALL
 
 on:
+  schedule:
+    # Example: Runs every day at midnight (Adjust as necessary)
+    # GitHub Actions cron runs in UTC (Pacific Time is UTC-7) e.g. 0 9 * * * should run everynight at 2:00 AM PST
+    - cron: '0 9 * * *' 
   workflow_dispatch:
     inputs:
       TEST_PROFILE:
@@ -31,5 +35,3 @@ jobs:
     uses: ./.github/workflows/MCSOS.yml
     with:
       skip_build: true
-
-
