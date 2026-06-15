@@ -1,4 +1,4 @@
-name: MCLITE Workflow
+name: MCLITE
 
 on:
   workflow_dispatch:
@@ -26,7 +26,18 @@ on:
     types:
       - completed
 
+  workflow_call:
+        inputs:
+          skip_build:
+            required: false
+            type: boolean
+            default: false
+
 jobs:
+  build:
+    if: ${{ !inputs.skip_build }}
+    uses: ./.github/workflows/ci-compile.yml
+
   mcLite:
     runs-on: ubuntu-latest
     if: >
