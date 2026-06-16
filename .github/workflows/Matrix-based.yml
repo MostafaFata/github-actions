@@ -66,8 +66,6 @@ jobs:
       CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Run Profile
         run: |
           echo "PROFILE: ${PROFILE}"
