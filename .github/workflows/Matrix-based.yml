@@ -47,28 +47,27 @@ jobs:
 
   # Matrix job replaces mcgwse, mcgwsi, mcgwsl
   run-profiles:
-    runs-on: ubuntu-latest
-    needs: [build, gwson]
+  runs-on: ubuntu-latest
+  needs: [build, gwson]
 
-    strategy:
-      matrix:
-        profile: [MCGWSE, MCGWSI, MCGWSL]
+  strategy:
+    matrix:
+      profile: [MCGWSE, MCGWSI, MCGWSL]
+    fail-fast: false
 
-    # Filter logic (same behavior as before)
-    if: |
-      inputs.TEST_PROFILE == 'ALL' ||
-      inputs.TEST_PROFILE == 'MCGWS' ||
-      inputs.TEST_PROFILE == matrix.profile
+  env:
+    PROFILE: ${{ matrix.profile }}
+    EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+    CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
 
-    env:
-      PROFILE: ${{ matrix.profile }}
-      EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
-      CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
-
-    steps:
-      - name: Run Profile
-        run: |
-          echo "PROFILE: ${PROFILE}"
-          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
-          echo "EXPORT_TEMPLATE: ${EXPORT_TEMPLATE}"
-          echo "CF_RUNMODE: ${CF_RUNMODE}"
+  steps:
+    - name: Run Profile
+      if: |
+        inputs.TEST_PROFILE == 'ALL' ||
+        inputs.TEST_PROFILE == 'MCGWS' ||
+        inputs.TEST_PROFILE == matrix.profile
+      run: |
+        echo "PROFILE: ${PROFILE}"
+        echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+        echo "EXPORT_TEMPLATE: ${EXPORT_TEMPLATE}"
+        echo "CF_RUNMODE: ${CF_RUNMODE}"
