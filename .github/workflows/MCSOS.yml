@@ -26,6 +26,11 @@ on:
             required: false
             type: boolean
             default: false
+          TEST_PROFILE:
+            required: false
+            type: string
+            default: 'ALL'
+
 
 jobs:
   build:
