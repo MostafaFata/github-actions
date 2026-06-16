@@ -1,4 +1,4 @@
-name: MCSOS
+name: MCSOS Matrix Based
 
 on:
   workflow_dispatch:
@@ -20,17 +20,17 @@ on:
         default: 'B'
         type: choice
         options: [A, B, N, P]
-  workflow_call:
-        inputs:
-          skip_build:
-            required: false
-            type: boolean
-            default: false
-          TEST_PROFILE:
-            required: false
-            type: string
-            default: 'ALL'
 
+  workflow_call:
+    inputs:
+      skip_build:
+        required: false
+        type: boolean
+        default: false
+      TEST_PROFILE:
+        required: false
+        type: string
+        default: 'ALL'
 
 jobs:
   build:
@@ -40,30 +40,31 @@ jobs:
   soson:
     runs-on: ubuntu-latest
     needs: build
-    # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
-    if: always() && contains(fromJson('["MCSOS","MCSOSE","MCSOSI","MCSOSL","ALL"]'), inputs.TEST_PROFILE) 
+    if: always() && contains(fromJson('["MCSOS","MCSOSE","MCSOSI","MCSOSL","ALL"]'), inputs.TEST_PROFILE)
     steps:
-      - name: Run Profile
+      - name: Turn SOS ON
         run: echo "Turning SOS ON"
+
   # ================= PHASE 1 (PARALLEL) =================
   mcsos-phase:
     runs-on: ubuntu-latest
     needs: [build, soson]
 
     strategy:
+      fail-fast: false
       matrix:
         profile: [MCSOSE, MCSOSI, MCSOSL]
 
-    if: always() && (
-      inputs.TEST_PROFILE == 'ALL' ||
-      inputs.TEST_PROFILE == 'MCSOS' ||
-      inputs.TEST_PROFILE == matrix.profile
-      )
-
     steps:
       - name: Run Profile
+        if: |
+          always() && (
+            inputs.TEST_PROFILE == 'ALL' ||
+            inputs.TEST_PROFILE == 'MCSOS' ||
+            inputs.TEST_PROFILE == matrix.profile
+          )
         run: |
-          echo "Running ${{ matrix.profile }}"
+          echo "Running profile: ${{ matrix.profile }}"
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
