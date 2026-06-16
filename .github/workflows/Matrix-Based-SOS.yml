@@ -1,0 +1,69 @@
+name: MCSOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      TEST_PROFILE:
+        description: 'Profile to run'
+        required: true
+        default: 'ALL'
+        type: choice
+        options: [MCSOS, MCSOSI, MCSOSE, MCSOSL]
+      EXPORT_TEMPLATE:
+        description: 'Export Template'
+        required: false
+        default: 'TPV01'
+        type: string
+      CF_RUNMODE:
+        description: 'CFIT Runmode'
+        required: false
+        default: 'B'
+        type: choice
+        options: [A, B, N, P]
+  workflow_call:
+        inputs:
+          skip_build:
+            required: false
+            type: boolean
+            default: false
+          TEST_PROFILE:
+            required: false
+            type: string
+            default: 'ALL'
+
+
+jobs:
+  build:
+    if: ${{ !inputs.skip_build }}
+    uses: ./.github/workflows/ci-compile.yml
+
+  soson:
+    runs-on: ubuntu-latest
+    needs: build
+    # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
+    if: always() && contains(fromJson('["MCSOS","MCSOSE","MCSOSI","MCSOSL","ALL"]'), inputs.TEST_PROFILE) 
+    steps:
+      - name: Run Profile
+        run: echo "Turning SOS ON"
+  # ================= PHASE 1 (PARALLEL) =================
+  mcsos-phase:
+    runs-on: ubuntu-latest
+    needs: [build, soson]
+
+    strategy:
+      matrix:
+        profile: [MCSOSE, MCSOSI, MCSOSL]
+
+    if: always() && (
+      inputs.TEST_PROFILE == 'ALL' ||
+      inputs.TEST_PROFILE == 'MCSOS' ||
+      inputs.TEST_PROFILE == matrix.profile
+      )
+
+    steps:
+      - name: Run Profile
+        run: |
+          echo "Running ${{ matrix.profile }}"
+          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
+          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
+          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
