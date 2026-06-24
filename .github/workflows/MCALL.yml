@@ -12,7 +12,7 @@ on:
         required: true
         default: 'ALL'
         type: choice
-        options: [ALL]
+        options: [ALL, INV, E2E]
       EXPORT_TEMPLATE:
         description: 'Export Template'
         required: false

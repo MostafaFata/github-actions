@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, soson]
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
-    if: always() && contains(fromJson('["MCSOS","MCSOSE","ALL"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["MCSOS","MCSOSE","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
       - name: Run Profile
         run: |
@@ -61,7 +61,7 @@ jobs:
   mcsosi:
     runs-on: ubuntu-latest
     needs: [build, soson]
-    if: always() && contains(fromJson('["MCSOS","MCSOSI","ALL"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["MCSOS","MCSOSI","ALL", "ALLINV"]'), inputs.TEST_PROFILE)
     steps:
       - name: Run Profile
         run: |
@@ -72,7 +72,7 @@ jobs:
   mcsosl:
     runs-on: ubuntu-latest
     needs: [build, soson]
-    if: always() && contains(fromJson('["MCSOS","MCSOSL","ALL"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["MCSOS","MCSOSL","ALL", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
       - name: Run Profile
         run: |
