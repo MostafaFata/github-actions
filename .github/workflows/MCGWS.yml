@@ -41,41 +41,54 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
-    if: contains(fromJson('["MCGWS","MCGWSE","MCGWSI","MCGWSL","ALL"]'), inputs.TEST_PROFILE)
+    if: contains(fromJson('["MCGWS","MCGWSE","MCGWSI","MCGWSL","ALL"]'), inputs.TEST_PROFILE)  
+    env:
+      POM_PROFILE: GWS_ON
     steps:
       - name: Run Profile
-        run: echo "Turning GWS ON"
+        run: |
+          echo "Turning GWS ON"
+          echo "POM_PROFILE: $POM_PROFILE"
   # ================= PHASE 1 (PARALLEL) =================
   mcgwse:
     runs-on: ubuntu-latest
     needs: [build, gwson]
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: contains(fromJson('["MCGWS","MCGWSE","ALL"]'), inputs.TEST_PROFILE)
+    env:
+      POM_PROFILE: MCGWSE
     steps:
       - name: Run Profile
         run: |
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+          echo "POM_PROFILE: $POM_PROFILE"
 
   mcgwsi:
     runs-on: ubuntu-latest
     needs: [build, gwson]
     if: contains(fromJson('["MCGWS","MCGWSI","ALL"]'), inputs.TEST_PROFILE)
+    env:
+      POM_PROFILE: MCGWSI
     steps:
       - name: Run Profile
         run: |
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+          echo "POM_PROFILE: $POM_PROFILE"
 
   mcgwsl:
     runs-on: ubuntu-latest
     needs: [build, gwson]
     if: contains(fromJson('["MCGWS","MCGWSL","ALL"]'), inputs.TEST_PROFILE)
+    env:
+      POM_PROFILE: MCLite
     steps:
       - name: Run Profile
         run: |
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+          echo "POM_PROFILE: $POM_PROFILE"
