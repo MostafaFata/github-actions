@@ -55,21 +55,19 @@ jobs:
     needs: [build, gwson]
     # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: contains(fromJson('["MCGWS","MCGWSE","ALL"]'), inputs.TEST_PROFILE)
-    env:
-      POM_PROFILE: MCGWSE
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Run Profile
-        run: |
-          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
-          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
-          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
-          echo "POM_PROFILE: $POM_PROFILE"
-          
+      
       - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: MCGWS
         run: bash .github/scripts/run-maven.sh
+
 
 
   mcgwsi:
