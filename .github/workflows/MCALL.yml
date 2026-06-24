@@ -12,7 +12,7 @@ on:
         required: true
         default: 'ALL'
         type: choice
-        options: [ALL, INV, E2E]
+        options: [ALL, ALLINV, ALLE2E]
       EXPORT_TEMPLATE:
         description: 'Export Template'
         required: false
@@ -28,8 +28,6 @@ on:
 jobs:
   gws-all:
     uses: ./.github/workflows/MCGWS.yml
-    with:
-      TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
 
   sos-all:
     needs: gws-all
@@ -37,4 +35,3 @@ jobs:
     uses: ./.github/workflows/MCSOS.yml
     with:
       skip_build: true
-      TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
