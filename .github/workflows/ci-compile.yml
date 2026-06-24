@@ -28,6 +28,10 @@ jobs:
         shell: bash
         run: |
           java -version
+      
+      - name: Run Maven command
+        run: mvn -version
+        
       - name: Triggered by
         run: |
           echo "Triggered by ${{ github.actor }}"
