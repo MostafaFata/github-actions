@@ -58,6 +58,9 @@ jobs:
     env:
       POM_PROFILE: MCGWSE
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Run Profile
         run: |
           echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
