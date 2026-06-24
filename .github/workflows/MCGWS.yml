@@ -64,6 +64,10 @@ jobs:
           echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
           echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
           echo "POM_PROFILE: $POM_PROFILE"
+          
+      - name: Run Maven
+        run: .github/scripts/run-maven.sh
+
 
   mcgwsi:
     runs-on: ubuntu-latest
