@@ -29,7 +29,7 @@ jobs:
   gws-all:
     uses: ./.github/workflows/MCGWS.yml
     with:
-      TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+      TEST_PROFILE: ${{ inputs.TEST_PROFILE || 'ALL' }}
 
   sos-all:
     needs: gws-all
@@ -37,4 +37,4 @@ jobs:
     uses: ./.github/workflows/MCSOS.yml
     with:
       skip_build: true
-      TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+      TEST_PROFILE: ${{ inputs.TEST_PROFILE || 'ALL' }}
