@@ -57,7 +57,7 @@ jobs:
     if: contains(fromJson('["MCGWS","MCGWSE","ALL", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run Maven
         env:
