@@ -47,8 +47,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Run Maven
         env:
-          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
-          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
-          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE || 'MCLITE' }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE || 'TPV01' }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE || 'P' }}
           POM_PROFILE: MCLite
         run: bash .github/scripts/run-maven.sh
