@@ -30,6 +30,14 @@ on:
             required: false
             type: string
             default: 'ALL'
+          EXPORT_TEMPLATE:
+            required: false
+            default: 'TPV01'
+            type: string
+          CF_RUNMODE:
+            required: false
+            default: 'B'
+            type: string
 
 
 jobs:
