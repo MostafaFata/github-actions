@@ -53,7 +53,7 @@ jobs:
     if: contains(fromJson('["MCGWS","MCGWSE","MCGWSI","MCGWSL","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
      - name: Run Maven profile
-       uses: ./.github/actions/run-maven-profile/actions.yml
+       uses: ./.github/actions/run-maven-profile.yml
        with:
           POM_PROFILE: GWS_ON
           TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
