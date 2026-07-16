@@ -21,68 +21,89 @@ on:
         type: choice
         options: [A, B, N, P]
   workflow_call:
-        inputs:
-          skip_build:
-            required: false
-            type: boolean
-            default: false
-          TEST_PROFILE:
-            required: false
-            type: string
-            default: 'ALL'
+    inputs:
+      skip_build:
+        required: false
+        type: boolean
+        default: false
+      TEST_PROFILE:
+        required: false
+        type: string
+        default: 'ALL'
+      EXPORT_TEMPLATE:
+        required: false
+        default: 'TPV01'
+        type: string
+      CF_RUNMODE:
+        required: false
+        default: 'B'
+        type: string
 
 
 jobs:
+  # ================= PHASE 0 (BUILD) =================
   build:
     if: ${{ !inputs.skip_build }}
     uses: ./.github/workflows/ci-compile.yml
 
+  # ================= PHASE 1 (SOS ON) =================
   soson:
     runs-on: ubuntu-latest
     needs: build
-    # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
-    if: always() && contains(fromJson('["MCSOS","MCSOSE","MCSOSI","MCSOSL","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE) 
+    if: always() && contains(fromJson('["MCSOS","MCSOSE","MCSOSI","MCSOSL","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
-      - name: Run Profile
-        run: echo "Turning SOS ON"
-  # ================= PHASE 1 (PARALLEL) =================
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: SOS_ON
+        run: bash .github/scripts/run-maven.sh
+
+  # ================= PHASE 2 (PARALLEL: MCSOSE, MCSOSI, MCSOSL) =================
   mcsose:
     runs-on: ubuntu-latest
     needs: [build, soson]
-    # Evaluates the input directly. On schedule, inputs are blank, so the || 'ALL' defaults it to 'ALL'
     if: always() && contains(fromJson('["MCSOS","MCSOSE","ALL", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
-      - name: Run Profile
-        run: |
-          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
-          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
-          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: MCSOSE
+        run: bash .github/scripts/run-maven.sh
 
   mcsosi:
     runs-on: ubuntu-latest
     needs: [build, soson]
     if: always() && contains(fromJson('["MCSOS","MCSOSI","ALL", "ALLINV"]'), inputs.TEST_PROFILE)
     steps:
-      - name: Run Profile
-        run: |
-          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
-          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
-          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
-      
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: MCSOSI
+        run: bash .github/scripts/run-maven.sh
+
   mcsosl:
     runs-on: ubuntu-latest
     needs: [build, soson]
     if: always() && contains(fromJson('["MCSOS","MCSOSL","ALL"]'), inputs.TEST_PROFILE)
     steps:
-      - name: Run Profile
-        run: |
-          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
-          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
-          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
-
-  # mcsosl:
-  #   needs: [build, soson]
-  #   if: always() && contains(fromJson('["MCSOS","MCSOSL","ALL"]'), inputs.TEST_PROFILE)
-  #   uses: ./.github/workflows/MCLITE.yml
-  #   with:
-  #     skip_build: true
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: MCSOSL
+        run: bash .github/scripts/run-maven.sh
