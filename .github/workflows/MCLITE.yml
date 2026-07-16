@@ -36,7 +36,7 @@ on:
 jobs:
   build:
     if: ${{ !inputs.skip_build }}
-    uses: ./.github/workflows/ci-compile.yml
+    uses: ./.github/workflows/Compile.yml
 
   mcLite:
     runs-on: ubuntu-latest

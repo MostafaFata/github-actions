@@ -44,7 +44,7 @@ jobs:
   # ================= PHASE 0 (BUILD) =================
   build:
     if: ${{ !inputs.skip_build }}
-    uses: ./.github/workflows/ci-compile.yml
+    uses: ./.github/workflows/Compile.yml
 
   # ================= PHASE 1 (SOS ON) =================
   soson:
