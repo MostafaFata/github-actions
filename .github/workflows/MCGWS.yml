@@ -51,15 +51,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: contains(fromJson('["MCGWS","MCGWSE","MCGWSI","MCGWSL","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE)
-    env:
-      POM_PROFILE: GWS_ON
     steps:
-      - name: Run Profile
-        run: |
-          echo "Turning GWS ON"
-          echo "POM_PROFILE: $POM_PROFILE"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: GWS_ON
+        run: bash .github/scripts/run-maven.sh
 
-  # ================= PHASE 2 (PARALLEL: GWSE, GWSI, GWSL) =================
+  # ================= PHASE 2 (PARALLEL: MCGWSE, MCGWSI, MCGWSL) =================
   mcgwse:
     runs-on: ubuntu-latest
     needs: [build, gwson]
