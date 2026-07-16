@@ -22,7 +22,7 @@ on:
         options: [A, B, N, P]
     
   workflow_run:
-    workflows: ["GWS Workflow"] 
+    workflows: ["MCGWS"] 
     types:
       - completed
 
