@@ -52,13 +52,15 @@ jobs:
     needs: build
     if: contains(fromJson('["MCGWS","MCGWSE","MCGWSI","MCGWSL","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
-     - name: Run Maven profile
-       uses: ./.github/actions/run-maven-profile
-       with:
-          POM_PROFILE: GWS_ON
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
           TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
           EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
           CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: GWS_ON
+        run: bash .github/scripts/run-maven.sh
 
   # ================= PHASE 2 (PARALLEL: MCGWSE, MCGWSI, MCGWSL) =================
   mcgwse:
