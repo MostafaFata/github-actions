@@ -30,6 +30,8 @@ jobs:
     uses: ./.github/workflows/MCGWS.yml
     with:
       TEST_PROFILE: ${{ inputs.TEST_PROFILE || 'ALL' }}
+      EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE || 'TPV01' }}
+      CF_RUNMODE: ${{ inputs.CF_RUNMODE || 'B' }}
 
   sos-all:
     needs: gws-all
