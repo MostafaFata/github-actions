@@ -41,16 +41,14 @@ jobs:
   mcLite:
     runs-on: ubuntu-latest
     needs: build
-    if: always()
-    # if: >
-    #   ${{
-    #     github.event_name == 'workflow_dispatch' ||
-    #     (github.event_name == 'workflow_run' &&
-    #      github.event.workflow_run.conclusion == 'success')
-    #   }}
+    if: always() && contains(fromJson('["MCLITE"]'), inputs.TEST_PROFILE)
     steps:
-      - name: Run MCLITE job
-        run: |
-          echo "TEST_PROFILE: ${{ inputs.TEST_PROFILE }}"
-          echo "EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}"
-          echo "CF_RUNMODE: ${{ inputs.CF_RUNMODE }}"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: MCLite
+        run: bash .github/scripts/run-maven.sh
