@@ -1,0 +1,40 @@
+name: Monitor
+
+on:
+  schedule:
+    # at minute 0 of every hour" i.e., runs once per hour, on the hour (00:00, 01:00, 02:00, ... 23:00)
+    - cron: '0 8 * * *'
+
+env:
+  EXPORT_TEMPLATE: RELEASE
+  CF_RUNMODE: P
+
+jobs:
+  build:
+    uses: ./.github/workflows/Compile.yml
+
+  Buckets:
+    name: (${{ matrix.config.name }})
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - name: "Air"
+            profile: "Bucket_Monitor_AirSTG"
+          - name: "Ocean"
+            profile: "Bucket_Monitor_OceanSTG"
+          - name: "Transcon"
+            profile: "Bucket_Monitor_TruckSTG" 
+          - name: "Multimode"
+            profile: "Bucket_Monitor_MMSTG" 
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          EXPORT_TEMPLATE: ${{ env.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ env.CF_RUNMODE }}
+          POM_PROFILE: ${{ matrix.config.profile }}
+        run: bash .github/scripts/run-maven.sh
