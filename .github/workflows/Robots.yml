@@ -29,20 +29,18 @@ jobs:
     uses: ./.github/workflows/Compile.yml
 
   Air:
-    name: Air (${{ matrix.config.profile }})
+    name: Air (${{ matrix.config.name }})
     runs-on: ubuntu-latest
     needs: build
     if: always() && contains(fromJson('["Robots","AIR"]'), inputs.TEST_PROFILE)
-
     strategy:
       fail-fast: false
       matrix:
         config: 
-          - name: "Air Origin"
+          - name: "Origin"
             profile: "Air_OriginSTG"
-          - name: "Air Gateway 1"
+          - name: "Gateway 1"
             profile: "Air_Gateway1STG"
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -55,15 +53,20 @@ jobs:
         run: bash .github/scripts/run-maven.sh  
 
   Ocean:
+    name: Ocean (${{ matrix.config.name }})
     runs-on: ubuntu-latest
     needs: [build, Air]
     if: always() && contains(fromJson('["Robots","OCN"]'), inputs.TEST_PROFILE)
-
     strategy:
       fail-fast: false
       matrix:
-        profile: [Ocean Origin, Ocean Gateway 1, Ocean Gateway 2]
-
+        config: 
+          - name: "Origin"
+            profile: "Ocean_OriginSTG"
+          - name: "Gateway 1"
+            profile: "Ocean_Gateway1STG"
+          - name: "Gateway 2"
+            profile: "Ocean_Gateway2STG"  
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -72,5 +75,57 @@ jobs:
           TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
           EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
           CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
-          POM_PROFILE: ${{ matrix.profile }}
+          POM_PROFILE: ${{ matrix.config.profile }}
+        run: bash .github/scripts/run-maven.sh
+
+
+  Transcon:
+    name: Transcon (${{ matrix.config.name }})
+    runs-on: ubuntu-latest
+    needs: [build, Air, Ocean]
+    if: always() && contains(fromJson('["Robots","TRN"]'), inputs.TEST_PROFILE)
+    strategy:
+      fail-fast: false
+      matrix:
+        config: 
+          - name: "Origin"
+            profile: "Transcon_OriginSTG"
+          - name: "Gateway 1"
+            profile: "Transcon_Gateway1STG"
+          - name: "Gateway 2"
+            profile: "Transcon_Gateway2STG"  
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: ${{ matrix.config.profile }}
+        run: bash .github/scripts/run-maven.sh
+
+
+  Multimode:
+    name: Multimode (${{ matrix.config.name }})
+    runs-on: ubuntu-latest
+    needs: [build, Air, Ocean, Transcon]
+    if: always() && contains(fromJson('["Robots","MMD"]'), inputs.TEST_PROFILE)
+    strategy:
+      fail-fast: false
+      matrix:
+        config: 
+          - name: "Origin"
+            profile: "Multimode_OriginSTG"
+          - name: "Gateway 1"
+            profile: "Multimode_Gateway1STG" 
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: ${{ matrix.config.profile }}
         run: bash .github/scripts/run-maven.sh
