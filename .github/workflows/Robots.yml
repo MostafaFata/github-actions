@@ -31,12 +31,12 @@ jobs:
   Air:
     runs-on: ubuntu-latest
     needs: build
-    if: contains(fromJson('["Robots","AIR"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["Robots","AIR"]'), inputs.TEST_PROFILE)
 
     strategy:
       fail-fast: false
       matrix:
-        profile: [Air Origin, Airt Gateway 1]
+        profile: [Air Origin, Air Gateway 1]
 
     steps:
       - name: Checkout repo
@@ -46,5 +46,26 @@ jobs:
           TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
           EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
           CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
-          POM_PROFILE: matrix.profile
+          POM_PROFILE: ${{ matrix.profile }}
         run: bash .github/scripts/run-maven.sh  
+
+  Ocean:
+    runs-on: ubuntu-latest
+    needs: [build, Air]
+    if: always() && contains(fromJson('["Robots","OCN"]'), inputs.TEST_PROFILE)
+
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [Ocean Origin, Ocean Gateway 1, Ocean Gateway 2]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: ${{ matrix.profile }}
+        run: bash .github/scripts/run-maven.sh
