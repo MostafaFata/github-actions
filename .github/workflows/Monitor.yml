@@ -4,6 +4,7 @@ on:
   schedule:
     # at minute 0 of every hour" i.e., runs once per hour, on the hour (00:00, 01:00, 02:00, ... 23:00)
     - cron: '0 8 * * *'
+  workflow_dispatch:
 
 env:
   EXPORT_TEMPLATE: RELEASE
