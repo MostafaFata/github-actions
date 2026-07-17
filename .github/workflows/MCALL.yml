@@ -26,7 +26,11 @@ on:
         options: [A, B, N, P]
 
 jobs:
+  build:
+    uses: ./.github/workflows/Compile.yml
+
   gws-all:
+    needs: build
     uses: ./.github/workflows/MCGWS.yml
     with:
       TEST_PROFILE: ${{ inputs.TEST_PROFILE || 'ALL' }}
@@ -34,7 +38,7 @@ jobs:
       CF_RUNMODE: ${{ inputs.CF_RUNMODE || 'B' }}
 
   sos-all:
-    needs: gws-all
+    needs: [build, gws-all]
     if: always()
     uses: ./.github/workflows/MCSOS.yml
     with:
