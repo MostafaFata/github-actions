@@ -50,7 +50,7 @@ jobs:
   gwson:
     runs-on: ubuntu-latest
     needs: build
-    if: contains(fromJson('["MCGWS","MCGWSE","MCGWSI","MCGWSL","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["MCGWS","MCGWSE","MCGWSI","MCGWSL","ALL", "ALLINV", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -66,7 +66,7 @@ jobs:
   mcgwse:
     runs-on: ubuntu-latest
     needs: [build, gwson]
-    if: contains(fromJson('["MCGWS","MCGWSE","ALL", "ALLE2E"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["MCGWS","MCGWSE","ALL", "ALLE2E"]'), inputs.TEST_PROFILE)
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -81,7 +81,7 @@ jobs:
   mcgwsi:
     runs-on: ubuntu-latest
     needs: [build, gwson]
-    if: contains(fromJson('["MCGWS","MCGWSI","ALL", "ALLINV"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["MCGWS","MCGWSI","ALL", "ALLINV"]'), inputs.TEST_PROFILE)
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -96,7 +96,7 @@ jobs:
   mcgwsl:
     runs-on: ubuntu-latest
     needs: [build, gwson]
-    if: contains(fromJson('["MCGWS","MCGWSL","ALL"]'), inputs.TEST_PROFILE)
+    if: always() && contains(fromJson('["MCGWS","MCGWSL","ALL"]'), inputs.TEST_PROFILE)
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
