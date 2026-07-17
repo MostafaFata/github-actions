@@ -32,3 +32,8 @@ jobs:
       - name: Triggered by
         run: |
           echo "Triggered by ${{ github.actor }}"
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v4
+        with:
+          name: build
