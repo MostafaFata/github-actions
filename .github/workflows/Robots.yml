@@ -36,7 +36,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: [Air Origin, Air Gateway 1]
+        config: 
+          - name: "Air Origin"
+            profile: "Air_OriginSTG"
+          - name: "Air Gateway 1"
+            profile: "Air_Gateway1STG"
 
     steps:
       - name: Checkout repo
@@ -46,7 +50,7 @@ jobs:
           TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
           EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
           CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
-          POM_PROFILE: ${{ matrix.profile }}
+          POM_PROFILE: ${{ matrix.config.profile }}
         run: bash .github/scripts/run-maven.sh  
 
   Ocean:
