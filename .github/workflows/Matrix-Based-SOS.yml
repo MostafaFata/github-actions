@@ -35,7 +35,7 @@ on:
 jobs:
   build:
     if: ${{ !inputs.skip_build }}
-    uses: ./.github/workflows/ci-compile.yml
+    uses: ./.github/workflows/Compile.yml
 
   soson:
     runs-on: ubuntu-latest
