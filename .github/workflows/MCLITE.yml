@@ -32,14 +32,14 @@ on:
             required: false
             type: boolean
             default: false
-        EXPORT_TEMPLATE:
-          required: false
-          default: 'TPV01'
-          type: string
-        CF_RUNMODE:
-          required: false
-          default: 'P'
-          type: string
+          EXPORT_TEMPLATE:
+            required: false
+            default: 'TPV01'
+            type: string
+          CF_RUNMODE:
+            required: false
+            default: 'P'
+            type: string
 
 jobs:
   build:

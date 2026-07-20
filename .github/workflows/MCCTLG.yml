@@ -32,6 +32,5 @@ jobs:
     uses: ./.github/workflows/MCLITE.yml
     with:
       skip_build: true
-      env:
-          EXPORT_TEMPLATE: ${{ env.EXPORT_TEMPLATE }}
-          CF_RUNMODE: ${{ env.CF_RUNMODE }}
+      EXPORT_TEMPLATE: ${{ env.EXPORT_TEMPLATE }}
+      CF_RUNMODE: ${{ env.CF_RUNMODE }}
