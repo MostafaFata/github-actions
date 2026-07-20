@@ -1,0 +1,29 @@
+name: MCCTLG
+
+on:
+  schedule:
+    # at minute 0 of every hour" i.e., runs once per hour, on the hour (00:00, 01:00, 02:00, ... 23:00)
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+env:
+  EXPORT_TEMPLATE: RELEASE
+  CF_RUNMODE: P
+
+jobs:
+  build:
+    uses: ./.github/workflows/Compile.yml
+
+  Catalog Regression:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: HappyPathSTG
+        run: bash .github/scripts/run-maven.sh
