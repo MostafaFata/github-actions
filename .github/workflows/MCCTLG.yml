@@ -26,3 +26,11 @@ jobs:
           CF_RUNMODE: ${{ env.CF_RUNMODE }}
           POM_PROFILE: HappyPathSTG
         run: bash .github/scripts/run-maven.sh
+
+  MCLite-STG:
+    needs: [build]
+    uses: ./.github/workflows/MCSOS.yml
+    with:
+      skip_build: true
+      EXPORT_TEMPLATE: ${{ env.EXPORT_TEMPLATE }}
+      CF_RUNMODE: ${{ env.CF_RUNMODE }}
