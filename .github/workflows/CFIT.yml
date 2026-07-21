@@ -1,0 +1,41 @@
+name: CFIT
+
+on:
+  schedule:
+    # at minute 0 of every hour" i.e., runs once per hour, on the hour (00:00, 01:00, 02:00, ... 23:00)
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+env:
+  EXPORT_TEMPLATE: RELEASE
+  CF_RUNMODE: N
+
+jobs:
+  build:
+    uses: ./.github/workflows/Compile.yml
+
+  CFIT_App_Controls:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          EXPORT_TEMPLATE: ${{ env.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ env.CF_RUNMODE }}
+          POM_PROFILE: CFITAppControls
+        run: bash .github/scripts/run-maven.sh
+
+  CFIT_General:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          EXPORT_TEMPLATE: ${{ env.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ env.CF_RUNMODE }}
+          POM_PROFILE: CFITGeneral
+        run: bash .github/scripts/run-maven.sh
