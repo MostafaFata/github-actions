@@ -44,6 +44,11 @@ jobs:
         run: bash .github/scripts/run-maven.sh
 
   CFIT_General:
+    if: > 
+      (github.event_name == 'schedule' && 
+       github.event.schedule == '0 8 * * *') || 
+      (github.event_name == 'workflow_dispatch' && 
+      (github.event.inputs.target == 'CFIT STAGING'))
     runs-on: ubuntu-latest
     needs: [build]
     steps:
@@ -54,4 +59,22 @@ jobs:
           EXPORT_TEMPLATE: ${{ env.EXPORT_TEMPLATE }}
           CF_RUNMODE: ${{ env.CF_RUNMODE }}
           POM_PROFILE: CFITGeneral
+        run: bash .github/scripts/run-maven.sh
+
+    CFIT_QA:
+    if: > 
+      (github.event_name == 'schedule' && 
+       github.event.schedule == '30 22 * * 4') || 
+      (github.event_name == 'workflow_dispatch' && 
+      (github.event.inputs.target == 'CFIT QA'))
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Maven
+        env:
+          EXPORT_TEMPLATE: 'TPV01'
+          CF_RUNMODE: ${{ env.CF_RUNMODE }}
+          POM_PROFILE: CFITQA
         run: bash .github/scripts/run-maven.sh
