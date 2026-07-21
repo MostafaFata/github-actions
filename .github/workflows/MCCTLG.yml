@@ -11,14 +11,12 @@ env:
   CF_RUNMODE: P
 
 jobs:
-  MCLite-STG:
-    uses: ./.github/workflows/MCLITE.yml
-    with:
-      EXPORT_TEMPLATE: 'RELEASE'
-      CF_RUNMODE: 'P'
+  build:
+    uses: ./.github/workflows/Compile.yml
 
   Catalog:
     runs-on: ubuntu-latest
+    needs: [build]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
