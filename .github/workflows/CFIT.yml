@@ -1,14 +1,10 @@
 name: CFIT
-
-var:
-  STG_Schedule: '0 8 * * *'
-  QA_Schedule: '30 22 * * 4'
-
+  
 on:
   schedule:
     # at minute 0 of every hour" i.e., runs once per hour, on the hour (00:00, 01:00, 02:00, ... 23:00)
-    - cron: STG_Schedule
-    - cron: QA_Schedule
+    - cron: ${{ env.STG_Schedule }}
+    - cron: ${{ env.QA_Schedule }} 
   workflow_dispatch:
     inputs:
       target:
@@ -22,6 +18,8 @@ on:
     
 
 env:
+  STG_Schedule: '0 8 * * *'
+  QA_Schedule: '30 22 * * 4'
   EXPORT_TEMPLATE: RELEASE
   CF_RUNMODE: N
 
@@ -32,7 +30,7 @@ jobs:
   CFIT_App_Controls:
     if: > 
       (github.event_name == 'schedule' && 
-       github.event.schedule == STG_Schedule) || 
+       github.event.schedule == ${{ env.STG_Schedule }}) || 
       (github.event_name == 'workflow_dispatch' && 
       (github.event.inputs.target == 'STAGING'))
     runs-on: ubuntu-latest
@@ -50,7 +48,7 @@ jobs:
   CFIT_General:
     if: > 
       (github.event_name == 'schedule' && 
-       github.event.schedule == STG_Schedule) || 
+       github.event.schedule == ${{ env.STG_Schedule }}) || 
       (github.event_name == 'workflow_dispatch' && 
       (github.event.inputs.target == 'STAGING'))
     runs-on: ubuntu-latest
@@ -68,7 +66,7 @@ jobs:
   CFIT_QA:
     if: > 
       (github.event_name == 'schedule' && 
-       github.event.schedule == QA_Schedule) || 
+       github.event.schedule == ${{ env.QA_Schedule }}) || 
       (github.event_name == 'workflow_dispatch' && 
       (github.event.inputs.target == 'QA'))
     runs-on: ubuntu-latest
