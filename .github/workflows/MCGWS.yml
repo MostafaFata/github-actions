@@ -61,7 +61,7 @@ jobs:
           CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
           POM_PROFILE: GWS_ON
         run: bash .github/scripts/run-maven.sh
-      - name: Report dgflag settings
+      - name: Print Flag Report
         env:
           TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
           EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
