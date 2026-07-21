@@ -4,7 +4,18 @@ on:
   schedule:
     # at minute 0 of every hour" i.e., runs once per hour, on the hour (00:00, 01:00, 02:00, ... 23:00)
     - cron: '0 8 * * *'
+    - cron: '30 22 * * 4'
   workflow_dispatch:
+    inputs:
+      target:
+        description: CFIT Test Suites
+        required: true
+        default: CFIT STAGING
+        type: choice
+        options:
+          - CFIT STAGING
+          - CFIT QA
+    
 
 env:
   EXPORT_TEMPLATE: RELEASE
@@ -15,6 +26,11 @@ jobs:
     uses: ./.github/workflows/Compile.yml
 
   CFIT_App_Controls:
+    if: > 
+      (github.event_name == 'schedule' && 
+       github.event.schedule == '0 8 * * *') || 
+      (github.event_name == 'workflow_dispatch' && 
+      (github.event.inputs.target == 'CFIT STAGING'))
     runs-on: ubuntu-latest
     needs: [build]
     steps:
