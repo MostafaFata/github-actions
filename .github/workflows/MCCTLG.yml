@@ -11,12 +11,14 @@ env:
   CF_RUNMODE: P
 
 jobs:
-  build:
-    uses: ./.github/workflows/Compile.yml
+  MCLite-STG:
+    uses: ./.github/workflows/MCLITE.yml
+    with:
+      EXPORT_TEMPLATE: 'RELEASE'
+      CF_RUNMODE: 'P'
 
   Catalog:
     runs-on: ubuntu-latest
-    needs: [build]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -26,11 +28,3 @@ jobs:
           CF_RUNMODE: ${{ env.CF_RUNMODE }}
           POM_PROFILE: HappyPathSTG
         run: bash .github/scripts/run-maven.sh
-
-  MCLite-STG:
-    needs: [build]
-    uses: ./.github/workflows/MCLITE.yml
-    with:
-      skip_build: true
-      EXPORT_TEMPLATE: 'RELEASE'
-      CF_RUNMODE: 'P'
