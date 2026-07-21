@@ -10,11 +10,11 @@ on:
       target:
         description: CFIT Test Suites
         required: true
-        default: CFIT STAGING
+        default: STAGING
         type: choice
         options:
-          - CFIT STAGING
-          - CFIT QA
+          - STAGING
+          - QA
     
 
 env:
@@ -30,7 +30,7 @@ jobs:
       (github.event_name == 'schedule' && 
        github.event.schedule == '0 8 * * *') || 
       (github.event_name == 'workflow_dispatch' && 
-      (github.event.inputs.target == 'CFIT STAGING'))
+      (github.event.inputs.target == 'STAGING'))
     runs-on: ubuntu-latest
     needs: [build]
     steps:
@@ -48,7 +48,7 @@ jobs:
       (github.event_name == 'schedule' && 
        github.event.schedule == '0 8 * * *') || 
       (github.event_name == 'workflow_dispatch' && 
-      (github.event.inputs.target == 'CFIT STAGING'))
+      (github.event.inputs.target == 'STAGING'))
     runs-on: ubuntu-latest
     needs: [build]
     steps:
@@ -66,7 +66,7 @@ jobs:
       (github.event_name == 'schedule' && 
        github.event.schedule == '30 22 * * 4') || 
       (github.event_name == 'workflow_dispatch' && 
-      (github.event.inputs.target == 'CFIT QA'))
+      (github.event.inputs.target == 'QA'))
     runs-on: ubuntu-latest
     needs: [build]
     steps:
