@@ -54,12 +54,19 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Run Maven
+      - name: Turn GWS ON
         env:
           TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
           EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
           CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
           POM_PROFILE: GWS_ON
+        run: bash .github/scripts/run-maven.sh
+      - name: Report dgflag settings
+        env:
+          TEST_PROFILE: ${{ inputs.TEST_PROFILE }}
+          EXPORT_TEMPLATE: ${{ inputs.EXPORT_TEMPLATE }}
+          CF_RUNMODE: ${{ inputs.CF_RUNMODE }}
+          POM_PROFILE: GD_FLAG_RPT
         run: bash .github/scripts/run-maven.sh
 
   # ================= PHASE 2 (PARALLEL: MCGWSE, MCGWSI, MCGWSL) =================
